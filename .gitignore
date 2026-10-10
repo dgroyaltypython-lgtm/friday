@@ -1,0 +1,5 @@
+.env
+*.jks
+*.keystore
+local.properties
+.DS_Store

@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# Gradle wrapper bootstrap script
+APP_HOME=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+GRADLE_USER_HOME="${GRADLE_USER_HOME:-$HOME/.gradle}"
+DIST="gradle-8.9-bin"
+DIST_DIR="$GRADLE_USER_HOME/wrapper/dists/$DIST"
+GRADLE_HOME="$DIST_DIR/gradle-8.9"
+if [ ! -x "$GRADLE_HOME/bin/gradle" ]; then
+  mkdir -p "$DIST_DIR"
+  ZIP="$DIST_DIR/$DIST.zip"
+  if command -v curl >/dev/null 2>&1; then
+    curl -fL "https://services.gradle.org/distributions/$DIST.zip" -o "$ZIP"
+  else
+    echo "curl is required to download Gradle" >&2
+    exit 1
+  fi
+  unzip -q -o "$ZIP" -d "$DIST_DIR"
+  rm -f "$ZIP"
+fi
+exec "$GRADLE_HOME/bin/gradle" "$@"
