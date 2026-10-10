@@ -2,7 +2,7 @@ workflows:
   friday-android-debug:
     name: FRIDAY AI - Debug APK
     max_build_duration: 60
-    instance_type: mac_mini
+    instance_type: linux
 
     environment:
       java: 17
@@ -28,7 +28,7 @@ workflows:
   friday-android-release:
     name: FRIDAY AI - Release APK
     max_build_duration: 60
-    instance_type: mac_mini
+    instance_type: linux
 
     environment:
       java: 17
