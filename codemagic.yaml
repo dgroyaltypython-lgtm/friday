@@ -3,53 +3,50 @@ workflows:
     name: FRIDAY AI - Debug APK
     max_build_duration: 60
     instance_type: mac_mini
+
     environment:
       java: 17
-      android_signing:
-        - friday_android_keystore
+
     scripts:
-      - name: Show toolchain
+      - name: Show Java version
         script: |
           java -version
-          flutter --version || true
-          echo "Building native Android project"
-      - name: Build debug APK
+
+      - name: Configure Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+
+      - name: Build Debug APK
         script: |
           cd android
           chmod +x gradlew
           ./gradlew --no-daemon --stacktrace assembleDebug
+
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
-      - android/app/build/outputs/mapping/**/mapping.txt
-    publishing:
-      email:
-        recipients:
-          - $CM_BUILD_INITIATOR
-        notify:
-          success: true
-          failure: true
 
   friday-android-release:
     name: FRIDAY AI - Release APK
     max_build_duration: 60
     instance_type: mac_mini
+
     environment:
       java: 17
-      android_signing:
-        - friday_android_keystore
+
     scripts:
-      - name: Build release APK
+      - name: Show Java version
+        script: |
+          java -version
+
+      - name: Configure Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+
+      - name: Build Release APK
         script: |
           cd android
           chmod +x gradlew
           ./gradlew --no-daemon --stacktrace assembleRelease
+
     artifacts:
       - android/app/build/outputs/apk/release/*.apk
-      - android/app/build/outputs/mapping/**/mapping.txt
-    publishing:
-      email:
-        recipients:
-          - $CM_BUILD_INITIATOR
-        notify:
-          success: true
-          failure: true
